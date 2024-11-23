@@ -13,6 +13,8 @@
 
 3.프로그램 수행 절차
 3.1 다이어그램
+![image](https://github.com/user-attachments/assets/d75a7f5f-0d2e-49fc-8d36-f0b4b9ac4e48)
+
 3.2 클래스 다이어그램
 3.3 절차 설명
 
