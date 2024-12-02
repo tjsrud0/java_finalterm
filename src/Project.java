@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class ProjectDetails {
     private String major;
@@ -18,7 +21,12 @@ class ProjectDetails {
 }
 
 public class Project extends JFrame {
+    private List<ProjectDetails> projects;
+    private List<ProjectDetails> submittedProjects;
+
     public Project() {
+        projects = new ArrayList();
+        submittedProjects = new ArrayList<>();
         setTitle("과제 관리 프로그램");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
