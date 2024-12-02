@@ -23,6 +23,7 @@ class ProjectDetails {
 public class Project extends JFrame {
     private List<ProjectDetails> projects;
     private List<ProjectDetails> submittedProjects;
+    private JTextArea projectListArea;
 
     public Project() {
         projects = new ArrayList();
@@ -30,6 +31,16 @@ public class Project extends JFrame {
         setTitle("과제 관리 프로그램");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        projectListArea = new JTextArea();
+        projectListArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(projectListArea);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(mainPanel);
+        setVisible(true);
     }
 
     public static void main(String[] args) {
