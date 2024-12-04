@@ -74,6 +74,10 @@ public class Project extends JFrame {
 
     private void displayProjects() {
         projectListArea.setText("과제 목록을 표시합니다.");
+        for(ProjectDetails project : projects) {
+            projectListArea.append(project.toString() + "\n");
+        }
+        projectListArea.setCaretPosition(0);
     }
 
     public static void main(String[] args) {
