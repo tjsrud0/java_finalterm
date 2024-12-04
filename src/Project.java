@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class ProjectDetails {
     private String major;
@@ -30,6 +31,7 @@ public class Project extends JFrame {
 
     public Project() {
         projects = new ArrayList();
+        autoAddProjects();
         submittedProjects = new ArrayList<>();
         setTitle("과제 관리 프로그램");
         setSize(600, 400);
@@ -56,6 +58,18 @@ public class Project extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    private void autoAddProjects() {
+        String[] majors = {"운영체제", "GUI", "JAVA2", "알고리즘 설계"};
+        String[] titles = {"프로젝트 1", "프로젝트 2", "프로젝트 3"};
+
+        Random random = new Random();
+        for(int i = 0; i < 5; i++) {
+            String major = majors[random.nextInt(majors.length)];
+            String title = titles[random.nextInt(titles.length)];
+            projects.add(new ProjectDetails(major, title, "2024-12-01"));
+        }
     }
 
     private void displayProjects() {
