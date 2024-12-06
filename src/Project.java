@@ -31,7 +31,7 @@ public class Project extends JFrame {
     private String filePath;
 
     public Project() {
-        projects = new ArrayList();
+        projects = new ArrayList<>();
         autoAddProjects();
         submittedProjects = new ArrayList<>();
         setTitle("과제 관리 프로그램");
@@ -102,6 +102,22 @@ public class Project extends JFrame {
 
         JOptionPane.showMessageDialog(this, "과제가 제출되었습니다. " + filePath);
         filePath = null;
+    }
+
+    private void displaySubmittedProjects() {
+        JTextArea submittedProjectsArea = new JTextArea();
+        submittedProjectsArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(submittedProjectsArea);
+
+        if(submittedProjectsArea.isEmpty()) {
+            submittedProjectsArea.setText("제출한 과제가 없습니다.");
+        } else {
+            for(ProjectDetails project : submittedProjects) {
+                submittedProjectsArea.append(project.toString() + "\n");
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, scrollPane, "제출한 과제 목록", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {
