@@ -28,6 +28,7 @@ public class Project extends JFrame {
     private List<ProjectDetails> projects;
     private List<ProjectDetails> submittedProjects;
     private JTextArea projectListArea;
+    private String filePath;
 
     public Project() {
         projects = new ArrayList();
@@ -56,6 +57,19 @@ public class Project extends JFrame {
             }
         });
 
+        JButton fileButton = new JButton("제출 파일 선택");
+        fileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int returnValue = fileChooser.showOpenDialog(null);
+                if(returnValue == JFileChooser.APPROVE_OPTION) {
+                    filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    JOptionPane.showMessageDialog(null, "선택한 파일 : " + filePath);
+                }
+            }
+        });
+
         add(mainPanel);
         setVisible(true);
     }
@@ -78,6 +92,10 @@ public class Project extends JFrame {
             projectListArea.append(project.toString() + "\n");
         }
         projectListArea.setCaretPosition(0);
+    }
+
+    private void submitProject() {
+        //제출 로직 구현
     }
 
     public static void main(String[] args) {
