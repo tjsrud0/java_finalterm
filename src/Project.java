@@ -2,9 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 class ProjectDetails {
     private String major;
@@ -159,36 +162,41 @@ public class Project extends JFrame {
             }
         });
 
-        JButton fileButton = new JButton("제출 파일 선택");
-        fileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int returnValue = fileChooser.showOpenDialog(null);
-                if(returnValue == JFileChooser.APPROVE_OPTION) {
-                    filePath = fileChooser.getSelectedFile().getAbsolutePath();
-                    JOptionPane.showMessageDialog(null, "선택한 파일 : " + filePath);
+        projectListArea.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() == 2) { // 더블 클릭 시
+                    try {
+                        int index = projectListArea.getLineOfOffset(projectListArea.getCaretPosition());
+                        if (index >= 0 && index < projects.size()) {
+                            ProjectDetails selectedProject = projects.get(index);
+                            majorField.setText(selectedProject.getMajor());
+                            titleField.setText(selectedProject.getTitle());
+                            dueDateField.setText(selectedProject.getDueDate());
+                            projectContentArea.setText("과제 내용."); // 과제 내용을 여기에 추가
+                            CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+                            cardLayout.show(getContentPane(), "SubmitPanel"); // 제출 패널로 전환
+                        }
+                    } catch (Exception e1) {
+                        e1.printStackTrace(); // 예외 처리
+                    }
                 }
             }
         });
 
-        buttonPanel.add(fileButton);
-        buttonPanel.add(submitButton);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        add(mainPanel);
         setVisible(true);
     }
 
     private void autoAddProjects() {
         String[] majors = {"운영체제", "GUI", "JAVA2", "알고리즘 설계"};
         String[] titles = {"프로젝트 1", "프로젝트 2", "프로젝트 3"};
+        String[] dueDates = {"2024-12-01", "2024-12-10", "2024-12-15"};
 
         Random random = new Random();
         for(int i = 0; i < 5; i++) {
             String major = majors[random.nextInt(majors.length)];
             String title = titles[random.nextInt(titles.length)];
-            projects.add(new ProjectDetails(major, title, "2024-12-01"));
+            String dueDate = dueDates[random.nextInt(dueDates.length)];
+            projects.add(new ProjectDetails(major, title, dueDate));
         }
     }
 
@@ -198,17 +206,6 @@ public class Project extends JFrame {
             projectListArea.append(project.toString() + "\n");
         }
         projectListArea.setCaretPosition(0);
-    }
-
-    private void submitProject() {
-        if(filePath == null || filePath.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "제출할 파일을 선택하세요.");
-            return;
-        }
-
-
-        JOptionPane.showMessageDialog(this, "과제가 제출되었습니다. " + filePath);
-        filePath = null;
     }
 
     private void displaySubmittedProjects() {
@@ -225,6 +222,33 @@ public class Project extends JFrame {
         }
 
         JOptionPane.showMessageDialog(this, scrollPane, "제출한 과제 목록", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void submitProject() {
+        String studentId = studentIdField.getText();
+        String studentName = studentNameField.getText();
+
+        if(filePath == null || filePath.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "제출할 파일을 선택하세요.");
+            return;
+        }
+
+        if (projects.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "제출할 과제가 없습니다.");
+            return;
+        }
+
+        ProjectDetails projectToSubmit = projects.get(0);
+        submittedProjects.add(projectToSubmit);
+        projects.remove(0);
+
+        JOptionPane.showMessageDialog(this, "과제가 제출되었습니다. " + filePath);
+        studentIdField.setText("");
+        studentNameField.setText("");
+        filePath = null;
+
+        CardLayout cardLayout = (CardLayout) getContentPane().getLayout();
+        cardLayout.show(getContentPane(), "MainPanel");
     }
 
     public static void main(String[] args) {
