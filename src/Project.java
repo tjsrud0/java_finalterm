@@ -95,7 +95,13 @@ public class Project extends JFrame {
     }
 
     private void submitProject() {
-        //제출 로직 구현
+        if(filePath == null || filePath.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "제출할 파일을 선택하세요.");
+            return;
+        }
+
+        JOptionPane.showMessageDialog(this, "과제가 제출되었습니다. " + filePath);
+        filePath = null;
     }
 
     public static void main(String[] args) {
